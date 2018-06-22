@@ -1,0 +1,32 @@
+// $ protoc -I protos/ \
+//     -I${GOPATH}/src \
+//     --go_out=plugins=grpc:protos \
+//     protos/helloworld.proto
+//
+// $ protoc -I/usr/local/include -I. \
+//      -I$GOPATH/src \
+//      -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
+//      --grpc-gateway_out=logtostderr=true:. \
+//      protos/helloworld.proto
+
+syntax = "proto3";
+package helloworld;
+
+import "google/api/annotations.proto";
+
+service Greeter {
+    rpc SayHello (HelloRequest) returns (HelloResponse) {
+        option (google.api.http) = {
+			post: "/greeter/hello"
+			body: "*"
+		};
+    }
+}
+
+message HelloRequest {
+    string name = 1;
+}
+
+message HelloResponse {
+    string message = 1;
+}
